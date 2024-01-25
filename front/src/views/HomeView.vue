@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { Mandelbrot } from '@/Mandelbrot'
 import type { ViewBox } from '@/utils/image'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 const canvasWasm = ref<HTMLCanvasElement | undefined>(undefined)
 const canvasJs = ref<HTMLCanvasElement | undefined>(undefined)
+
+const iteration = ref(100)
+const max = ref(2)
 
 onMounted(async () => {
   if (canvasJs.value === undefined) {
@@ -15,17 +18,22 @@ onMounted(async () => {
   }
 
   const viewBox: ViewBox = {
-    topLeft: { x: -40, y: 20 },
-    bottomRight: { x: 40, y: -20 }
+    topLeft: { x: -4, y: 2 },
+    bottomRight: { x: 4, y: -2 }
   }
 
-  const iteration = 100
-  const max = 2
-
   const mandelbrotJs = new Mandelbrot({ techno: 'js', canvas: canvasJs.value })
-  await mandelbrotJs.draw(viewBox, iteration, max)
+  await mandelbrotJs.draw(viewBox, iteration.value, max.value)
   // const mandelbrotWasm = new Mandelbrot({ techno: 'wasm', canvas: canvasWasm.value })
   // await mandelbrotWasm.draw(viewBox, iteration, max)
+
+  watch(max, async () => {
+    await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+  })
+
+  watch(iteration, async () => {
+    await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+  })
 })
 </script>
 
@@ -38,11 +46,11 @@ onMounted(async () => {
     <div class="command">
       <label>
         <span>Iterations</span>
-        <input type="range" name="" id="" min="1" max="1000" />
+        <input type="range" name="" id="" min="1" max="1000" v-model="iteration" />
       </label>
       <label>
         <span>Trigger</span>
-        <input type="range" name="" id="" min="1" max="1000" />
+        <input type="range" name="" id="" min="1" max="1000" v-model="max" />
       </label>
     </div>
     <div class="stats">
