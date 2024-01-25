@@ -18,14 +18,20 @@
     </div>
     <div class="stats">
       <table>
+        <thead>
+          <tr>
+            <th class="techno">Technology</th>
+            <th class="time">Time (ms)</th>
+          </tr>
+        </thead>
         <tbody>
           <tr class="wasm">
-            <th class="name">WASM</th>
-            <td class="value">123</td>
+            <td class="name">WASM</td>
+            <td class="value number">123</td>
           </tr>
           <tr class="js">
-            <th class="name">JS</th>
-            <td class="value">56</td>
+            <td class="name">JS</td>
+            <td class="value number">56</td>
           </tr>
         </tbody>
       </table>
@@ -56,6 +62,30 @@ div.command {
   label {
     display: flex;
     flex-flow: column;
+  }
+}
+
+div.stats {
+  table {
+    border-spacing: 0.1em;
+    border-collapse: separate;
+    background-color: black;
+    th,
+    td {
+      padding: 0.5em 1em;
+    }
+
+    th {
+      background: #eee;
+    }
+
+    td {
+      background: white;
+
+      &.number {
+        text-align: right;
+      }
+    }
   }
 }
 </style>
