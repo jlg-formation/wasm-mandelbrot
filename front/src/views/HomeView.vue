@@ -1,10 +1,26 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Mandelbrot } from '@/Mandelbrot'
+import { ref, onMounted } from 'vue'
+
+const canvasWasm = ref<HTMLCanvasElement | undefined>(undefined)
+const canvasJs = ref<HTMLCanvasElement | undefined>(undefined)
+
+onMounted(async () => {
+  console.log('canvasWasm.value: ', canvasWasm.value)
+  console.log('canvasJs.value: ', canvasJs.value)
+
+  const mandelbrotJs = new Mandelbrot({ techno: 'js', canvas: canvasJs.value })
+  await mandelbrotJs.draw()
+  const mandelbrotWasm = new Mandelbrot({ techno: 'wasm', canvas: canvasWasm.value })
+  await mandelbrotWasm.draw()
+})
+</script>
 
 <template>
   <main>
     <div class="canvas">
-      <canvas class="wasm"></canvas>
-      <canvas class="js"></canvas>
+      <canvas class="wasm" ref="canvasWasm"></canvas>
+      <canvas class="js" ref="canvasJs"></canvas>
     </div>
     <div class="command">
       <label>
