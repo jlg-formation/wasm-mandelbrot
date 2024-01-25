@@ -10,7 +10,7 @@ export const addz = (a: Complex, b: Complex): Complex => {
 }
 
 export const multz = (a: Complex, b: Complex): Complex => {
-  return { x: a.x * b.y - b.x * a.y, y: a.x * b.y + b.x * a.y }
+  return { x: a.x * b.x - a.y * b.y, y: a.x * b.y + b.x * a.y }
 }
 
 export const modulez = (z: Complex): number => {

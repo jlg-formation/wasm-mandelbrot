@@ -5,7 +5,7 @@ export const mandelbrotIteration = (z: Complex, c: Complex): Complex => {
 }
 
 export const mandelbrotSuite = (c: Complex, iteration: Integer) => {
-  let z = c
+  let z = { x: 0, y: 0 }
   for (let i = 0; i < iteration; i++) {
     z = mandelbrotIteration(z, c)
   }

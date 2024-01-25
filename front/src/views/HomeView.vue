@@ -6,6 +6,9 @@ import { ref, onMounted, watch } from 'vue'
 const canvasWasm = ref<HTMLCanvasElement | undefined>(undefined)
 const canvasJs = ref<HTMLCanvasElement | undefined>(undefined)
 
+const width = 200
+const height = 100
+
 const iteration = ref(100)
 const max = ref(2)
 
@@ -18,8 +21,8 @@ onMounted(async () => {
   }
 
   const viewBox: ViewBox = {
-    topLeft: { x: -4, y: 2 },
-    bottomRight: { x: 4, y: -2 }
+    topLeft: { x: -2, y: 1 },
+    bottomRight: { x: 2, y: -1 }
   }
 
   const mandelbrotJs = new Mandelbrot({ techno: 'js', canvas: canvasJs.value })
@@ -40,17 +43,17 @@ onMounted(async () => {
 <template>
   <main>
     <div class="canvas">
-      <canvas class="wasm" ref="canvasWasm" width="100" height="50"></canvas>
-      <canvas class="js" ref="canvasJs" width="100" height="50"></canvas>
+      <canvas class="wasm" ref="canvasWasm" :width="width" :height="height"></canvas>
+      <canvas class="js" ref="canvasJs" :width="width" :height="height"></canvas>
     </div>
     <div class="command">
       <label>
-        <span>Iterations</span>
+        <span>Iterations: {{ iteration }}</span>
         <input type="range" name="" id="" min="1" max="1000" v-model="iteration" />
       </label>
       <label>
-        <span>Trigger</span>
-        <input type="range" name="" id="" min="1" max="1000" v-model="max" />
+        <span>Trigger: {{ max }}</span>
+        <input type="range" name="" id="" min="0" max="10" v-model="max" step="0.01" />
       </label>
     </div>
     <div class="stats">
