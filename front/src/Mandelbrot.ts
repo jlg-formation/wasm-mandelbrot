@@ -1,5 +1,6 @@
 import type { MandelbrotConfig, MandelbrotDrawer } from './interfaces/Mandelbrot'
 import { MandelbrotDrawerJS } from './MandelbrotDrawerJS'
+import type { ViewBox } from './utils/image'
 
 export class Mandelbrot {
   drawer: MandelbrotDrawer
@@ -13,7 +14,7 @@ export class Mandelbrot {
     this.drawer = new MandelbrotDrawerJS()
   }
 
-  draw() {
-    this.drawer.draw(this.config.canvas)
+  async draw(viewBox: ViewBox, iteration: number, max: number) {
+    await this.drawer.draw(this.config.canvas, viewBox, iteration, max)
   }
 }
