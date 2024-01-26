@@ -4,10 +4,13 @@ export const mandelbrotIteration = (z: Complex, c: Complex): Complex => {
   return addz(multz(z, z), c)
 }
 
-export const mandelbrotSuite = (c: Complex, iteration: Integer) => {
+export const getMandelbrotNumber = (c: Complex, iterationMaximum: Integer, limit: number) => {
   let z = { x: 0, y: 0 }
-  for (let i = 0; i < iteration; i++) {
+  for (let i = 0; i < iterationMaximum; i++) {
     z = mandelbrotIteration(z, c)
+    if (modulez(z) > limit) {
+      return i
+    }
   }
-  return modulez(z)
+  return iterationMaximum
 }

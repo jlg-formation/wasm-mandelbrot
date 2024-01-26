@@ -2,12 +2,8 @@ export interface Color {
   red: number
   green: number
   blue: number
-  alpha: number
 }
 
-export const getColor = (intensite: number, max: number): Color => {
-  if (intensite > max) {
-    return { red: 255, green: 255, blue: 255, alpha: 1 }
-  }
-  return { red: (intensite / max) * 255, green: 0, blue: 0, alpha: 1 }
+export const getColor = (mandelbrotNumber: number, iterationMaximum: number): Color => {
+  return { red: (1 - mandelbrotNumber / iterationMaximum) * 255, green: 0, blue: 0 }
 }

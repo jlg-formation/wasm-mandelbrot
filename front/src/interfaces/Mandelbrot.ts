@@ -6,5 +6,10 @@ export interface MandelbrotConfig {
 }
 
 export interface MandelbrotDrawer {
-  draw(canvas: HTMLCanvasElement, viewBox: ViewBox, iteration: number, max: number): Promise<void>
+  draw(
+    canvas: HTMLCanvasElement,
+    viewBox: ViewBox,
+    iterationMaximum: number,
+    limit: number
+  ): Promise<void>
 }
