@@ -4,8 +4,8 @@ import { debounce } from '@/utils/debounce'
 import { getViewBoxFromCanvas } from '@/utils/viewbox'
 import { onMounted, ref, watch } from 'vue'
 
-const canvasWidth = 200
-const canvasHeight = 100
+const canvasWidth = 400
+const canvasHeight = 200
 
 const canvasWasm = ref<HTMLCanvasElement | undefined>(undefined)
 const canvasJs = ref<HTMLCanvasElement | undefined>(undefined)

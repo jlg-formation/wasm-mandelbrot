@@ -1,16 +1,16 @@
 let throttleLastTime = Date.now()
 
-export const throttle = (func: () => any) => {
-  return () => {
+export const throttle = (delay: number, func: (...args: any[]) => any) => {
+  return (...args: any[]) => {
     const currentTime = Date.now()
-    if (currentTime - throttleLastTime < 500) {
+    if (currentTime - throttleLastTime < delay) {
       throttleLastTime = currentTime
       console.log('cancelled by throttle')
       return
     }
     throttleLastTime = currentTime
     console.log('play throttle')
-    func()
+    func(...args)
   }
 }
 

@@ -1,7 +1,9 @@
 import type { ViewBox } from './interfaces/geometry'
 import type { MandelbrotConfig, MandelbrotDrawer } from './interfaces/Mandelbrot'
 import { MandelbrotDrawerJS } from './MandelbrotDrawerJS'
+import { throttle } from './utils/debounce'
 import { move } from './utils/move'
+import { zoom } from './utils/zoom'
 
 export const mandelBrots: Mandelbrot[] = []
 
@@ -38,6 +40,15 @@ export class Mandelbrot {
   }
 
   setActions() {
+    this.setMoveAction()
+    this.setZoomAction()
+  }
+
+  setConfig(config: Partial<MandelbrotConfig>) {
+    Object.assign(this.config, config)
+  }
+
+  setMoveAction() {
     console.log('this.config.canvas: ', this.config.canvas)
     this.config.canvas.addEventListener('mousedown', (startEvent: MouseEvent) => {
       console.log('mousedown')
@@ -59,7 +70,14 @@ export class Mandelbrot {
     })
   }
 
-  setConfig(config: Partial<MandelbrotConfig>) {
-    Object.assign(this.config, config)
+  setZoomAction() {
+    this.config.canvas.addEventListener(
+      'wheel',
+      throttle(300, (wheelEvent: WheelEvent) => {
+        console.log('wheelEvent: ', wheelEvent)
+        const viewBox = zoom(wheelEvent, this.config.canvas, this.config.viewBox)
+        redrawAll(viewBox)
+      })
+    )
   }
 }
