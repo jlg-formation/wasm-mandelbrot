@@ -9,12 +9,12 @@ export const rgb2Color = (rvb: string): Color => {
   return [red, green, blue]
 }
 
-const generatePalette = (size: number): Color[] => {
-  const hueNbr = 12
+export const generatePalette = (size: number): Color[] => {
   const array: Color[] = []
   for (let i = 0; i < size; i++) {
-    const hue = i * (360 / hueNbr)
-    const luminosity = (0.9 - (i * 0.5) / size) * 100
+    const ratio = i / size
+    const hue = (ratio * (360 * 2)) % 360
+    const luminosity = (ratio * 0.2 + 0.7) * 100
     const saturation = 100
     const color = convert.hsl.rgb([hue, saturation, luminosity])
     array.push(color)
@@ -24,10 +24,13 @@ const generatePalette = (size: number): Color[] => {
   return array
 }
 
-const palette = generatePalette(20)
-
-export const getColor = (mandelbrotNumber: number, iterationMaximum: number): Color => {
+export const getColor = (
+  mandelbrotNumber: number,
+  iterationMaximum: number,
+  palette: Color[]
+): Color => {
   // return [(1 - mandelbrotNumber / iterationMaximum) * 255, 0, 0]
+
   const indexReal = (palette.length * mandelbrotNumber) / (iterationMaximum + 1)
   const index = Math.floor(indexReal)
   if (index >= palette.length) {

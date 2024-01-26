@@ -1,6 +1,6 @@
 import type { MandelbrotDrawer } from './interfaces/Mandelbrot'
 import type { ViewBox } from './interfaces/geometry'
-import { getColor } from './utils/color'
+import { generatePalette, getColor } from './utils/color'
 import { getPoint } from './utils/image'
 import { getMandelbrotNumber } from './utils/mandelbrot.utils'
 import { get2dContext } from './utils/misc'
@@ -35,11 +35,13 @@ export class MandelbrotDrawerWasm implements MandelbrotDrawer {
     const context = get2dContext(canvas)
     const imageData = context.createImageData(canvas.width, canvas.height)
 
+    const palette = generatePalette(iterationMaximum)
+
     const imageContentBuffer = new Uint8Array(canvas.width * canvas.height * 4)
     for (let i = 0; i < canvas.width * canvas.height; i++) {
       const c = getPoint({ index: i, canvas, viewBox })
       const mandelbrotNumber = getMandelbrotNumber(c, iterationMaximum, limit)
-      const color = getColor(mandelbrotNumber, iterationMaximum)
+      const color = getColor(mandelbrotNumber, iterationMaximum, palette)
       const bufferIndex = i * 4
       imageContentBuffer[bufferIndex] = color[0]
       imageContentBuffer[bufferIndex + 1] = color[1]
