@@ -1,8 +1,11 @@
-import type { ViewBox } from '@/utils/image'
+import type { ViewBox } from './geometry'
 
 export interface MandelbrotConfig {
   canvas: HTMLCanvasElement
   techno: 'js' | 'wasm'
+  viewBox: ViewBox
+  iteration: number
+  max: number
 }
 
 export interface MandelbrotDrawer {

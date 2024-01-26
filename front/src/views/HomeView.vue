@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Mandelbrot } from '@/Mandelbrot'
+import { Mandelbrot, mandelBrots } from '@/Mandelbrot'
 import { debounce } from '@/utils/debounce'
 import { getViewBoxFromCanvas } from '@/utils/viewbox'
 import { onMounted, ref, watch } from 'vue'
@@ -27,18 +27,42 @@ onMounted(async () => {
   const jsViewBox = getViewBoxFromCanvas(canvasJs.value, 4.5, { x: -0.5, y: 0 })
   const wasmViewBox = getViewBoxFromCanvas(canvasWasm.value, 4.5, { x: -0.5, y: 0 })
 
-  const mandelbrotJs = new Mandelbrot({ techno: 'js', canvas: canvasJs.value })
-  jsProfile.value = await mandelbrotJs.draw(jsViewBox, iteration.value, max.value)
-  const mandelbrotWasm = new Mandelbrot({ techno: 'wasm', canvas: canvasWasm.value })
-  wasmProfile.value = await mandelbrotWasm.draw(wasmViewBox, iteration.value, max.value)
+  const mandelbrotJs = new Mandelbrot({
+    techno: 'js',
+    canvas: canvasJs.value,
+    viewBox: jsViewBox,
+    iteration: iteration.value,
+    max: max.value
+  })
+  const mandelbrotWasm = new Mandelbrot({
+    techno: 'wasm',
+    canvas: canvasWasm.value,
+    viewBox: wasmViewBox,
+    iteration: iteration.value,
+    max: max.value
+  })
+
+  while (mandelBrots.length > 0) {
+    mandelBrots.pop()
+  }
+  mandelBrots.push(mandelbrotJs)
+  mandelBrots.push(mandelbrotWasm)
+
+  jsProfile.value = await mandelbrotJs.draw()
+  wasmProfile.value = await mandelbrotWasm.draw()
 
   const debounceDelay = 300
 
   const onWatch = debounce(debounceDelay, async () => {
-    const [js, wasm] = await Promise.all([
-      mandelbrotJs.draw(jsViewBox, +iteration.value, +max.value),
-      mandelbrotWasm.draw(wasmViewBox, +iteration.value, +max.value)
-    ])
+    mandelbrotJs.setConfig({
+      iteration: +iteration.value,
+      max: +max.value
+    })
+    mandelbrotWasm.setConfig({
+      iteration: +iteration.value,
+      max: +max.value
+    })
+    const [js, wasm] = await Promise.all([mandelbrotJs.draw(), mandelbrotWasm.draw()])
     jsProfile.value = js
     wasmProfile.value = wasm
   })

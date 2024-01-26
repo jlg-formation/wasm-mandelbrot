@@ -1,6 +1,16 @@
 import type { ViewBox } from './interfaces/geometry'
 import type { MandelbrotConfig, MandelbrotDrawer } from './interfaces/Mandelbrot'
 import { MandelbrotDrawerJS } from './MandelbrotDrawerJS'
+import { move } from './utils/move'
+
+export const mandelBrots: Mandelbrot[] = []
+
+export const redrawAll = (viewBox: ViewBox) => {
+  for (const mandelbrot of mandelBrots) {
+    mandelbrot.setConfig({ viewBox: viewBox })
+    mandelbrot.draw()
+  }
+}
 
 export class Mandelbrot {
   drawer: MandelbrotDrawer
@@ -15,27 +25,41 @@ export class Mandelbrot {
     this.setActions()
   }
 
-  async draw(viewBox: ViewBox, iteration: number, max: number): Promise<number> {
+  async draw(): Promise<number> {
     const startTs = Date.now()
-    await this.drawer.draw(this.config.canvas, viewBox, iteration, max)
+    await this.drawer.draw(
+      this.config.canvas,
+      this.config.viewBox,
+      this.config.iteration,
+      this.config.max
+    )
     const endTs = Date.now()
     return endTs - startTs
   }
 
   setActions() {
     console.log('this.config.canvas: ', this.config.canvas)
-    this.config.canvas.addEventListener('mousedown', () => {
+    this.config.canvas.addEventListener('mousedown', (startEvent: MouseEvent) => {
       console.log('mousedown')
+
       const mousemove = () => {
         console.log('mousemove')
       }
-      const mouseup = () => {
+      const mouseup = (endEvent: MouseEvent) => {
         console.log('mouseup')
         document.removeEventListener('mousemove', mousemove)
         document.removeEventListener('mouseup', mouseup)
+
+        const viewBox = move(startEvent, endEvent, this.config.canvas, this.config.viewBox)
+        // set the config box
+        redrawAll(viewBox)
       }
       document.addEventListener('mousemove', mousemove)
       document.addEventListener('mouseup', mouseup)
     })
+  }
+
+  setConfig(config: Partial<MandelbrotConfig>) {
+    Object.assign(this.config, config)
   }
 }

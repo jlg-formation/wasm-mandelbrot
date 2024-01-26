@@ -3,6 +3,8 @@ export interface Point {
   y: number
 }
 
+export type Vector = Point
+
 export interface ViewBox {
   topLeft: Point
   bottomRight: Point
