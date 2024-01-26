@@ -14,7 +14,10 @@ export class Mandelbrot {
     this.drawer = new MandelbrotDrawerJS()
   }
 
-  async draw(viewBox: ViewBox, iteration: number, max: number) {
+  async draw(viewBox: ViewBox, iteration: number, max: number): Promise<number> {
+    const startTs = Date.now()
     await this.drawer.draw(this.config.canvas, viewBox, iteration, max)
+    const endTs = Date.now()
+    return endTs - startTs
   }
 }

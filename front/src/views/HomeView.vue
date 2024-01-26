@@ -36,16 +36,16 @@ onMounted(async () => {
   }
 
   const mandelbrotJs = new Mandelbrot({ techno: 'js', canvas: canvasJs.value })
-  await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+  jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
   // const mandelbrotWasm = new Mandelbrot({ techno: 'wasm', canvas: canvasWasm.value })
   // await mandelbrotWasm.draw(viewBox, iteration, max)
 
   watch(max, async () => {
-    await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+    jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
   })
 
   watch(iteration, async () => {
-    await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+    jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
   })
 })
 </script>
