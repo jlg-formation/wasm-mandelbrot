@@ -10,7 +10,7 @@ export const rgb2Color = (rvb: string): Color => {
 }
 
 const generatePalette = (size: number): Color[] => {
-  const hueNbr = 8
+  const hueNbr = 12
   const array: Color[] = []
   for (let i = 0; i < size; i++) {
     const hue = i * (360 / hueNbr)
@@ -28,9 +28,10 @@ const palette = generatePalette(20)
 
 export const getColor = (mandelbrotNumber: number, iterationMaximum: number): Color => {
   // return [(1 - mandelbrotNumber / iterationMaximum) * 255, 0, 0]
-  const index = Math.floor(palette.length * ((mandelbrotNumber - 1) / iterationMaximum))
-  if (index > palette.length - 1) {
-    throw new Error('merde !')
+  const indexReal = (palette.length * mandelbrotNumber) / (iterationMaximum + 1)
+  const index = Math.floor(indexReal)
+  if (index >= palette.length) {
+    throw new Error('not normal')
   }
   const color: Color = palette[index]
   return color

@@ -12,6 +12,8 @@ export class Mandelbrot {
       return
     }
     this.drawer = new MandelbrotDrawerJS()
+
+    this.setActions()
   }
 
   async draw(viewBox: ViewBox, iteration: number, max: number): Promise<number> {
@@ -19,5 +21,21 @@ export class Mandelbrot {
     await this.drawer.draw(this.config.canvas, viewBox, iteration, max)
     const endTs = Date.now()
     return endTs - startTs
+  }
+
+  setActions() {
+    this.config.canvas.addEventListener('mousedown', () => {
+      console.log('mousedown')
+      const mousemove = () => {
+        console.log('mousemove')
+      }
+      const mouseup = () => {
+        console.log('mouseup')
+        document.removeEventListener('mousemove', mousemove)
+        document.removeEventListener('mouseup', mouseup)
+      }
+      document.addEventListener('mousemove', mousemove)
+      document.addEventListener('mouseup', mouseup)
+    })
   }
 }
