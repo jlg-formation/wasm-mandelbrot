@@ -6,8 +6,11 @@ import { ref, onMounted, watch } from 'vue'
 const canvasWasm = ref<HTMLCanvasElement | undefined>(undefined)
 const canvasJs = ref<HTMLCanvasElement | undefined>(undefined)
 
-const width = 200
-const height = 100
+const wasmProfile = ref(0)
+const jsProfile = ref(0)
+
+const width = 400
+const height = 200
 
 const iteration = ref(100)
 const max = ref(2)
@@ -74,11 +77,11 @@ onMounted(async () => {
         <tbody>
           <tr class="wasm">
             <td class="name">WASM</td>
-            <td class="value number">123</td>
+            <td class="value number">{{ wasmProfile }}</td>
           </tr>
           <tr class="js">
             <td class="name">JS</td>
-            <td class="value number">56</td>
+            <td class="value number">{{ jsProfile }}</td>
           </tr>
         </tbody>
       </table>
