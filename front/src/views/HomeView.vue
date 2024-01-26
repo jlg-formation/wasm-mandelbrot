@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { Mandelbrot } from '@/Mandelbrot'
 import { debounce } from '@/utils/debounce'
-import type { Point, ViewBox } from '@/utils/image'
-import { ref, onMounted, watch } from 'vue'
+import { getViewBoxFromCanvas } from '@/utils/viewbox'
+import { onMounted, ref, watch } from 'vue'
+
+const canvasWidth = 400
+const canvasHeight = 200
 
 const canvasWasm = ref<HTMLCanvasElement | undefined>(undefined)
 const canvasJs = ref<HTMLCanvasElement | undefined>(undefined)
@@ -10,11 +13,8 @@ const canvasJs = ref<HTMLCanvasElement | undefined>(undefined)
 const wasmProfile = ref(0)
 const jsProfile = ref(0)
 
-const width = 400
-const height = 200
-
-const iteration = ref(100)
-const max = ref(2)
+const iteration = ref(30)
+const max = ref(5)
 
 onMounted(async () => {
   if (canvasJs.value === undefined) {
@@ -24,34 +24,26 @@ onMounted(async () => {
     throw new Error('cannot find canvasWasm')
   }
 
-  const ratio = height / width
-  const viewBoxWidth = 4.5
-  const viewBoxHeight = viewBoxWidth * ratio
-  const center: Point = { x: -0.5, y: 0 }
-  const topLeft: Point = { x: center.x - viewBoxWidth / 2, y: center.y + viewBoxHeight / 2 }
-  const bottomRight: Point = { x: center.x + viewBoxWidth / 2, y: center.y - viewBoxHeight / 2 }
-
-  const viewBox: ViewBox = {
-    topLeft,
-    bottomRight
-  }
+  const jsViewBox = getViewBoxFromCanvas(canvasJs.value, 4.5, { x: -0.5, y: 0 })
 
   const mandelbrotJs = new Mandelbrot({ techno: 'js', canvas: canvasJs.value })
-  jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+  jsProfile.value = await mandelbrotJs.draw(jsViewBox, iteration.value, max.value)
   // const mandelbrotWasm = new Mandelbrot({ techno: 'wasm', canvas: canvasWasm.value })
   // await mandelbrotWasm.draw(viewBox, iteration, max)
 
+  const debounceDelay = 300
+
   watch(
     max,
-    debounce(300, async () => {
-      jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+    debounce(debounceDelay, async () => {
+      jsProfile.value = await mandelbrotJs.draw(jsViewBox, iteration.value, max.value)
     })
   )
 
   watch(
     iteration,
-    debounce(300, async () => {
-      jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+    debounce(debounceDelay, async () => {
+      jsProfile.value = await mandelbrotJs.draw(jsViewBox, iteration.value, max.value)
     })
   )
 })
@@ -60,8 +52,8 @@ onMounted(async () => {
 <template>
   <main>
     <div class="canvas">
-      <canvas class="wasm" ref="canvasWasm" :width="width" :height="height"></canvas>
-      <canvas class="js" ref="canvasJs" :width="width" :height="height"></canvas>
+      <canvas class="wasm" ref="canvasWasm" :width="canvasWidth" :height="canvasHeight"></canvas>
+      <canvas class="js" ref="canvasJs" :width="canvasWidth" :height="canvasHeight"></canvas>
     </div>
     <div class="command">
       <label>
