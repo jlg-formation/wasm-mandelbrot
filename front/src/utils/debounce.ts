@@ -18,6 +18,7 @@ export const debounce = (delay: number, func: () => any) => {
   let timer: ReturnType<typeof setTimeout> | undefined = undefined
   return () => {
     if (timer) {
+      console.log('debounce redelay')
       clearTimeout(timer)
     }
     timer = setTimeout(() => {
