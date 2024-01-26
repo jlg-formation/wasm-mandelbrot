@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Mandelbrot } from '@/Mandelbrot'
+import { debounce } from '@/utils/debounce'
 import type { Point, ViewBox } from '@/utils/image'
 import { ref, onMounted, watch } from 'vue'
 
@@ -40,13 +41,19 @@ onMounted(async () => {
   // const mandelbrotWasm = new Mandelbrot({ techno: 'wasm', canvas: canvasWasm.value })
   // await mandelbrotWasm.draw(viewBox, iteration, max)
 
-  watch(max, async () => {
-    jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
-  })
+  watch(
+    max,
+    debounce(300, async () => {
+      jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+    })
+  )
 
-  watch(iteration, async () => {
-    jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
-  })
+  watch(
+    iteration,
+    debounce(300, async () => {
+      jsProfile.value = await mandelbrotJs.draw(viewBox, iteration.value, max.value)
+    })
+  )
 })
 </script>
 

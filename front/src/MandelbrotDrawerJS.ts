@@ -13,8 +13,6 @@ export class MandelbrotDrawerJS implements MandelbrotDrawer {
   ): Promise<void> {
     const context = get2dContext(canvas)
     const imageData = context.createImageData(canvas.width, canvas.height)
-    console.log('canvas.height: ', canvas.height)
-    console.log('canvas.width: ', canvas.width)
 
     const imageContentBuffer = new Uint8Array(canvas.width * canvas.height * 4)
     for (let i = 0; i < canvas.width * canvas.height; i++) {
