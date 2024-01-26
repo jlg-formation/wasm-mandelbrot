@@ -1,6 +1,7 @@
 import type { ViewBox } from './interfaces/geometry'
 import type { MandelbrotConfig, MandelbrotDrawer } from './interfaces/Mandelbrot'
 import { MandelbrotDrawerJS } from './MandelbrotDrawerJS'
+import { MandelbrotDrawerWasm } from './MandelbrotDrawerWasm'
 import { throttle } from './utils/debounce'
 import { move } from './utils/move'
 import { zoom } from './utils/zoom'
@@ -20,7 +21,7 @@ export class Mandelbrot {
   constructor(private config: MandelbrotConfig) {
     this.config = config
     if (this.config.techno === 'wasm') {
-      this.drawer = new MandelbrotDrawerJS()
+      this.drawer = new MandelbrotDrawerWasm()
     } else {
       this.drawer = new MandelbrotDrawerJS()
     }

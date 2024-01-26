@@ -5,7 +5,7 @@ import { getPoint } from './utils/image'
 import { getMandelbrotNumber } from './utils/mandelbrot.utils'
 import { get2dContext } from './utils/misc'
 
-export class MandelbrotDrawerJS implements MandelbrotDrawer {
+export class MandelbrotDrawerWasm implements MandelbrotDrawer {
   async draw(
     canvas: HTMLCanvasElement,
     viewBox: ViewBox,
