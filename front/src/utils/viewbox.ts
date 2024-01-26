@@ -1,4 +1,4 @@
-import type { Point, ViewBox } from './image'
+import type { Point, ViewBox } from '@/interfaces/geometry'
 
 export const getViewBoxFromCanvas = (
   canvas: HTMLCanvasElement,

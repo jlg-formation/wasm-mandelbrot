@@ -1,6 +1,7 @@
 import type { MandelbrotDrawer } from './interfaces/Mandelbrot'
+import type { ViewBox } from './interfaces/geometry'
 import { getColor, type Color } from './utils/color'
-import { getPoint, type ViewBox } from './utils/image'
+import { getPoint } from './utils/image'
 import { getMandelbrotNumber } from './utils/mandelbrot'
 import { get2dContext } from './utils/misc'
 
@@ -16,7 +17,7 @@ export class MandelbrotDrawerJS implements MandelbrotDrawer {
 
     const imageContentBuffer = new Uint8Array(canvas.width * canvas.height * 4)
     for (let i = 0; i < canvas.width * canvas.height; i++) {
-      const c = getPoint({ index: i, height: canvas.height, width: canvas.width, viewBox })
+      const c = getPoint({ index: i, canvas, viewBox })
       const mandelbrotNumber = getMandelbrotNumber(c, iterationMaximum, limit)
       const color: Color = getColor(mandelbrotNumber, iterationMaximum)
       const bufferIndex = i * 4
