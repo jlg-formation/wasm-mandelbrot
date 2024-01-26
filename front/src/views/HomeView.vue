@@ -25,18 +25,19 @@ onMounted(async () => {
   }
 
   const jsViewBox = getViewBoxFromCanvas(canvasJs.value, 4.5, { x: -0.5, y: 0 })
+  const wasmViewBox = getViewBoxFromCanvas(canvasWasm.value, 4.5, { x: -0.5, y: 0 })
 
   const mandelbrotJs = new Mandelbrot({ techno: 'js', canvas: canvasJs.value })
   jsProfile.value = await mandelbrotJs.draw(jsViewBox, iteration.value, max.value)
   const mandelbrotWasm = new Mandelbrot({ techno: 'wasm', canvas: canvasWasm.value })
-  await mandelbrotWasm.draw(jsViewBox, iteration.value, max.value)
+  wasmProfile.value = await mandelbrotWasm.draw(wasmViewBox, iteration.value, max.value)
 
   const debounceDelay = 300
 
   const onWatch = debounce(debounceDelay, async () => {
     const [js, wasm] = await Promise.all([
       mandelbrotJs.draw(jsViewBox, +iteration.value, +max.value),
-      mandelbrotWasm.draw(jsViewBox, +iteration.value, +max.value)
+      mandelbrotWasm.draw(wasmViewBox, +iteration.value, +max.value)
     ])
     jsProfile.value = js
     wasmProfile.value = wasm

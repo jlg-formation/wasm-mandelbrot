@@ -9,10 +9,9 @@ export class Mandelbrot {
     this.config = config
     if (this.config.techno === 'wasm') {
       this.drawer = new MandelbrotDrawerJS()
-      return
+    } else {
+      this.drawer = new MandelbrotDrawerJS()
     }
-    this.drawer = new MandelbrotDrawerJS()
-
     this.setActions()
   }
 
@@ -24,6 +23,7 @@ export class Mandelbrot {
   }
 
   setActions() {
+    console.log('this.config.canvas: ', this.config.canvas)
     this.config.canvas.addEventListener('mousedown', () => {
       console.log('mousedown')
       const mousemove = () => {
