@@ -19,11 +19,11 @@ export class MandelbrotDrawerJS implements MandelbrotDrawer {
     for (let i = 0; i < canvas.width * canvas.height; i++) {
       const c = getPoint({ index: i, canvas, viewBox })
       const mandelbrotNumber = getMandelbrotNumber(c, iterationMaximum, limit)
-      const color: Color = getColor(mandelbrotNumber, iterationMaximum)
+      const color = getColor(mandelbrotNumber, iterationMaximum)
       const bufferIndex = i * 4
-      imageContentBuffer[bufferIndex] = color.red
-      imageContentBuffer[bufferIndex + 1] = color.green
-      imageContentBuffer[bufferIndex + 2] = color.blue
+      imageContentBuffer[bufferIndex] = color[0]
+      imageContentBuffer[bufferIndex + 1] = color[1]
+      imageContentBuffer[bufferIndex + 2] = color[2]
       imageContentBuffer[bufferIndex + 3] = 255
     }
     imageData.data.set(imageContentBuffer)

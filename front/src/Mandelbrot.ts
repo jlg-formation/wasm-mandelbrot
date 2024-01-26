@@ -1,6 +1,6 @@
+import type { ViewBox } from './interfaces/geometry'
 import type { MandelbrotConfig, MandelbrotDrawer } from './interfaces/Mandelbrot'
 import { MandelbrotDrawerJS } from './MandelbrotDrawerJS'
-import type { ViewBox } from './utils/image'
 
 export class Mandelbrot {
   drawer: MandelbrotDrawer
