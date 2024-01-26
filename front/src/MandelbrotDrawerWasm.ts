@@ -21,7 +21,7 @@ export class MandelbrotDrawerWasm implements MandelbrotDrawer {
     }
     const instance = await init()
     MandelbrotDrawerWasm.isInitialized = true
-    const result = (instance.exports as MandelbrotWasmModule).add(3, 4)
+    const result = (instance.exports as unknown as MandelbrotWasmModule).add(3, 4)
     console.log('result: ', result)
   }
 

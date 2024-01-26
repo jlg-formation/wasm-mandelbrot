@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { Mandelbrot, mandelBrots } from '@/Mandelbrot'
+import { setCanvasDim } from '@/utils/canvas.utils'
 import { debounce } from '@/utils/debounce'
 import { getViewBoxFromCanvas } from '@/utils/viewbox'
 import { onMounted, ref, watch } from 'vue'
-
-const canvasWidth = 400
-const canvasHeight = 200
 
 const canvasWasm = ref<HTMLCanvasElement | undefined>(undefined)
 const canvasJs = ref<HTMLCanvasElement | undefined>(undefined)
@@ -23,6 +21,9 @@ onMounted(async () => {
   if (canvasWasm.value === undefined) {
     throw new Error('cannot find canvasWasm')
   }
+
+  setCanvasDim(canvasJs.value)
+  setCanvasDim(canvasWasm.value)
 
   const jsViewBox = getViewBoxFromCanvas(canvasJs.value, 4.5, { x: -0.5, y: 0 })
   const wasmViewBox = getViewBoxFromCanvas(canvasWasm.value, 4.5, { x: -0.5, y: 0 })
@@ -80,8 +81,8 @@ onMounted(async () => {
 <template>
   <main>
     <div class="canvas">
-      <canvas class="wasm" ref="canvasWasm" :width="canvasWidth" :height="canvasHeight"></canvas>
-      <canvas class="js" ref="canvasJs" :width="canvasWidth" :height="canvasHeight"></canvas>
+      <canvas class="wasm" ref="canvasWasm"></canvas>
+      <canvas class="js" ref="canvasJs"></canvas>
     </div>
     <div class="command">
       <label>
