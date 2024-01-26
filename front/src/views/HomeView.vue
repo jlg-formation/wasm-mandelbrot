@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Mandelbrot } from '@/Mandelbrot'
-import type { ViewBox } from '@/utils/image'
+import type { Point, ViewBox } from '@/utils/image'
 import { ref, onMounted, watch } from 'vue'
 
 const canvasWasm = ref<HTMLCanvasElement | undefined>(undefined)
@@ -20,9 +20,16 @@ onMounted(async () => {
     throw new Error('cannot find canvasWasm')
   }
 
+  const ratio = height / width
+  const viewBoxWidth = 4.5
+  const viewBoxHeight = viewBoxWidth * ratio
+  const center: Point = { x: -0.5, y: 0 }
+  const topLeft: Point = { x: center.x - viewBoxWidth / 2, y: center.y + viewBoxHeight / 2 }
+  const bottomRight: Point = { x: center.x + viewBoxWidth / 2, y: center.y - viewBoxHeight / 2 }
+
   const viewBox: ViewBox = {
-    topLeft: { x: -2, y: 1 },
-    bottomRight: { x: 2, y: -1 }
+    topLeft,
+    bottomRight
   }
 
   const mandelbrotJs = new Mandelbrot({ techno: 'js', canvas: canvasJs.value })
