@@ -4,7 +4,9 @@
       "outFile": "build/debug.wasm",
       "textFile": "build/debug.wat",
       "sourceMap": true,
-      "debug": true
+      "debug": true,
+      "runtime": "stub",
+      "importMemory": true
     },
     "release": {
       "outFile": "build/release.wasm",
@@ -13,7 +15,9 @@
       "optimizeLevel": 3,
       "shrinkLevel": 0,
       "converge": false,
-      "noAssert": false
+      "noAssert": false,
+      "runtime": "stub",
+      "importMemory": true
     }
   },
   "options": {
