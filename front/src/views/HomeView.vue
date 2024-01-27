@@ -2,7 +2,6 @@
 import { Mandelbrot, mandelBrots } from '@/Mandelbrot'
 import { setCanvasDim } from '@/utils/canvas.utils'
 import { debounce } from '@/utils/debounce'
-import { sleep } from '@/utils/misc'
 import { getViewBoxFromCanvas } from '@/utils/viewbox'
 import { onMounted, ref, watch } from 'vue'
 
