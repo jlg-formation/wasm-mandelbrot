@@ -1,6 +1,11 @@
 import { get2dContext } from './misc'
 
-export const setCanvasDim = (canvas: HTMLCanvasElement) => {
+export const setCanvasDim = (canvas: HTMLCanvasElement, defaultWidth?: number) => {
+  if (defaultWidth) {
+    canvas.width = defaultWidth
+    canvas.height = canvas.width / 2
+    return
+  }
   const boundingRect = canvas.getBoundingClientRect()
   console.log('boundingRect: ', boundingRect)
   const ctx = get2dContext(canvas)
@@ -14,7 +19,7 @@ export const setCanvasDim = (canvas: HTMLCanvasElement) => {
   canvas.style.height = boundingRect.width / 2 + 'px'
 
   canvas.width = width
-  canvas.height = width / 2
+  canvas.height = canvas.width / 2
 
   ctx.scale(ratio, ratio)
 

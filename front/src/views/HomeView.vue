@@ -2,6 +2,7 @@
 import { Mandelbrot, mandelBrots } from '@/Mandelbrot'
 import { setCanvasDim } from '@/utils/canvas.utils'
 import { debounce } from '@/utils/debounce'
+import { sleep } from '@/utils/misc'
 import { getViewBoxFromCanvas } from '@/utils/viewbox'
 import { onMounted, ref, watch } from 'vue'
 
@@ -22,8 +23,10 @@ onMounted(async () => {
     throw new Error('cannot find canvasWasm')
   }
 
-  setCanvasDim(canvasJs.value)
-  setCanvasDim(canvasWasm.value)
+  const canvasWidth = 400
+
+  setCanvasDim(canvasJs.value, canvasWidth)
+  setCanvasDim(canvasWasm.value, canvasWidth)
 
   const jsViewBox = getViewBoxFromCanvas(canvasJs.value, 4.5, { x: -0.5, y: 0 })
   const wasmViewBox = getViewBoxFromCanvas(canvasWasm.value, 4.5, { x: -0.5, y: 0 })
@@ -66,11 +69,10 @@ onMounted(async () => {
     // const [js, wasm] = await Promise.all([mandelbrotJs.draw(), mandelbrotWasm.draw()])
 
     const wasm = await mandelbrotWasm.draw()
-    console.log('wasm: ', wasm)
-    const js = await mandelbrotJs.draw()
-    console.log('js: ', js)
-    jsProfile.value = js
     wasmProfile.value = wasm
+    await sleep(2000)
+    const js = await mandelbrotJs.draw()
+    jsProfile.value = js
   })
 
   watch(max, onWatch)

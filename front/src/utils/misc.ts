@@ -1,6 +1,8 @@
 import type { Point, ViewBox } from '@/interfaces/geometry'
 import { getViewboxDimension } from './image'
 
+export const sleep = (delay: number) => new Promise((r) => setTimeout(r, delay))
+
 export const get2dContext = (canvas: HTMLCanvasElement): CanvasRenderingContext2D => {
   const result = canvas.getContext('2d')
   if (result === null) {
