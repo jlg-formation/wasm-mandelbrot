@@ -70,7 +70,7 @@ onMounted(async () => {
 
     const wasm = await mandelbrotWasm.draw()
     wasmProfile.value = wasm
-    await sleep(2000)
+    // await sleep(2000)
     const js = await mandelbrotJs.draw()
     jsProfile.value = js
   })
