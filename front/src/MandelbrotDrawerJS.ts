@@ -32,4 +32,6 @@ export class MandelbrotDrawerJS implements MandelbrotDrawer {
 
     context.putImageData(imageData, 0, 0)
   }
+
+  async instantiate(): Promise<void> {}
 }

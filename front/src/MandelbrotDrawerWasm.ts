@@ -6,25 +6,16 @@ import { get2dContext } from './utils/misc'
 const url = new URL('../../mandelbrot-wasm/build/release.wasm', import.meta.url)
 
 export class MandelbrotDrawerWasm implements MandelbrotDrawer {
+  exports: any
   memory = new WebAssembly.Memory({ initial: 10 })
-  async instantiate() {
-    const module = await WebAssembly.compileStreaming(fetch(url))
-    const { exports } = await WebAssembly.instantiate(module, {
-      env: {
-        memory: this.memory
-      }
-    })
-    return exports
-  }
+
   async draw(
     canvas: HTMLCanvasElement,
     viewBox: ViewBox,
     iterationMaximum: number,
     limit: number
   ): Promise<void> {
-    const exports: any = await this.instantiate()
-
-    exports.setMandelbrotNumbers(
+    this.exports.setMandelbrotNumbers(
       viewBox.topLeft.x,
       viewBox.topLeft.y,
       viewBox.bottomRight.x,
@@ -54,5 +45,15 @@ export class MandelbrotDrawerWasm implements MandelbrotDrawer {
     imageData.data.set(imageContentBuffer)
 
     context.putImageData(imageData, 0, 0)
+  }
+
+  async instantiate() {
+    const module = await WebAssembly.compileStreaming(fetch(url))
+    const { exports } = await WebAssembly.instantiate(module, {
+      env: {
+        memory: this.memory
+      }
+    })
+    this.exports = exports
   }
 }

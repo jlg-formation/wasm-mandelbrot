@@ -22,7 +22,7 @@ onMounted(async () => {
     throw new Error('cannot find canvasWasm')
   }
 
-  const canvasWidth = 400
+  const canvasWidth = 300
 
   setCanvasDim(canvasJs.value, canvasWidth)
   setCanvasDim(canvasWasm.value, canvasWidth)
@@ -37,6 +37,7 @@ onMounted(async () => {
     iteration: iteration.value,
     max: max.value
   })
+  await mandelbrotJs.instantiate()
   const mandelbrotWasm = new Mandelbrot({
     techno: 'wasm',
     canvas: canvasWasm.value,
@@ -44,6 +45,7 @@ onMounted(async () => {
     iteration: iteration.value,
     max: max.value
   })
+  await mandelbrotWasm.instantiate()
 
   while (mandelBrots.length > 0) {
     mandelBrots.pop()
@@ -51,8 +53,8 @@ onMounted(async () => {
   mandelBrots.push(mandelbrotJs)
   mandelBrots.push(mandelbrotWasm)
 
-  jsProfile.value = await mandelbrotJs.draw()
   wasmProfile.value = await mandelbrotWasm.draw()
+  jsProfile.value = await mandelbrotJs.draw()
 
   const debounceDelay = 300
 

@@ -9,6 +9,7 @@ export interface MandelbrotConfig {
 }
 
 export interface MandelbrotDrawer {
+  instantiate(): Promise<void>
   draw(
     canvas: HTMLCanvasElement,
     viewBox: ViewBox,

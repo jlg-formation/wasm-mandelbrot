@@ -40,6 +40,11 @@ export class Mandelbrot {
     return endTs - startTs
   }
 
+  async instantiate() {
+    await this.drawer.instantiate()
+    console.log('instantiated')
+  }
+
   setActions() {
     this.setMoveAction()
     this.setZoomAction()
