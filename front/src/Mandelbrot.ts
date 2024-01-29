@@ -28,7 +28,7 @@ export class Mandelbrot {
     this.setActions()
   }
 
-  async draw(): Promise<number> {
+  async draw(): Promise<void> {
     const startTs = Date.now()
     await this.drawer.draw(
       this.config.canvas,
@@ -37,7 +37,7 @@ export class Mandelbrot {
       this.config.max
     )
     const endTs = Date.now()
-    return endTs - startTs
+    this.config.duration.value = endTs - startTs
   }
 
   async instantiate() {

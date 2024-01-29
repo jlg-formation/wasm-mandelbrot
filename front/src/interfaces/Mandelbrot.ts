@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import type { ViewBox } from './geometry'
 
 export interface MandelbrotConfig {
@@ -6,6 +7,7 @@ export interface MandelbrotConfig {
   viewBox: ViewBox
   iteration: number
   max: number
+  duration: Ref<number>
 }
 
 export interface MandelbrotDrawer {
