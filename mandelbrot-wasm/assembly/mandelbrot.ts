@@ -7,8 +7,10 @@ export function getMandelbrotNumber(
   let zx: f64 = 0;
   let zy: f64 = 0;
   for (let i = 0; i < iterationMaximum; i++) {
-    zx = zx * zx - zy * zy + cx;
-    zy = 2 * zx * zy + cy;
+    const newx = zx * zx - zy * zy + cx;
+    const newy = 2 * zx * zy + cy;
+    zx = newx;
+    zy = newy;
     if (zx * zx + zy * zy > limit * limit) {
       return i;
     }
