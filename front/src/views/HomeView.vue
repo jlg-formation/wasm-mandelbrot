@@ -69,8 +69,6 @@ onMounted(async () => {
       iteration: +iteration.value,
       max: +max.value
     })
-    // const [js, wasm] = await Promise.all([mandelbrotJs.draw(), mandelbrotWasm.draw()])
-
     await mandelbrotWasm.draw()
     await mandelbrotJs.draw()
   })

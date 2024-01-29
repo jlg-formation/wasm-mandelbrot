@@ -1,7 +1,6 @@
 import type { MandelbrotDrawer } from './interfaces/Mandelbrot'
 import type { ViewBox } from './interfaces/geometry'
 import { generatePalette, getColor } from './utils/color'
-import { getPoint } from './utils/image'
 import { getMandelbrotNumber } from './utils/mandelbrot.utils'
 import { get2dContext } from './utils/misc'
 

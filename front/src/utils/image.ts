@@ -1,5 +1,4 @@
 import type { Point, Dimension, ViewBox } from '@/interfaces/geometry'
-import type { Complex } from './complex'
 
 export interface GetPointInput {
   index: number
@@ -15,15 +14,4 @@ export const getViewboxDimension = (viewBox: ViewBox): Dimension => {
   const viewboxWidth = viewBox.bottomRight.x - viewBox.topLeft.x
   const viewboxHeight = viewBox.topLeft.y - viewBox.bottomRight.y
   return { width: viewboxWidth, height: viewboxHeight }
-}
-
-export const getPoint = (input: GetPointInput): Complex => {
-  const p = getImageCoordinate(input)
-  const viewboxDim = getViewboxDimension(input.viewBox)
-
-  const c = {
-    x: input.viewBox.topLeft.x + (viewboxDim.width / input.canvas.width) * p.x,
-    y: input.viewBox.bottomRight.y + (viewboxDim.height / input.canvas.height) * p.y
-  }
-  return c
 }
